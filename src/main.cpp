@@ -88,11 +88,11 @@ void loop()
 
       if (lowDetector && digitalRead(floatSwitchLow))
       {
-        flashLed(GREEN);
+        flashLed(RED);
       }
       else
       {
-        flashLed(RED);
+        flashLed(PURPLE);
       }
     }
     else
@@ -110,17 +110,24 @@ void loop()
 bool ledState;
 void flashLed(unsigned int color)
 {
-  if (timeCount > 6)
+  if (ledState)
   {
-    timeCount = 0;
-    ;
-    if ( (ledState = !ledState))
+    // led is on
+    if (timeCount > 1)
     {
-      ledColor(RED);
-    }
-    else
-    {
+      timeCount = 0;
       ledColor(BLACK);
+      ledState=false;
+    }
+  }
+  else
+  {
+    // led is off
+    if (timeCount > 7)
+    {
+      timeCount = 0;
+      ledColor(color);
+      ledState=true;
     }
   }
 }
@@ -162,7 +169,7 @@ void ledColor(unsigned int color = BLACK)
     digitalWrite(ledRed, HIGH);
     digitalWrite(ledBlue, HIGH);
     break;
-    default:
+  default:
     break;
   }
 }
